@@ -1,0 +1,7 @@
+{
+  "license": "GPL-2.0-or-later WITH Bison-exception-2.2",
+  "scripts": {
+    "wp": "docker-compose run wordpress",
+    "wp-cli": "docker-compose run wpcli"
+  }
+}

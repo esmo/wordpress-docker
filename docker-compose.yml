@@ -1,0 +1,38 @@
+version: '3.6'
+services:
+    db:
+      image: mariadb:latest
+      ports:
+        - "3306:3306"
+      environment:
+        MYSQL_ROOT_PASSWORD: wordpress
+      volumes:
+        - ./database:/var/lib/mysql
+        - ./db_backup:/backup
+        - ./bin/db_server:/scripts
+      restart: always
+    wordpress:
+        image: wordpress:latest
+        depends_on:
+            - db
+        ports:
+            - 8081:80
+        restart: always
+        environment:
+            WORDPRESS_DB_HOST: db:3306
+            WORDPRESS_DB_PASSWORD: wordpress
+            WORDPRESS_TABLE_PREFIX: fzqp9q_
+        volumes:
+            - ./plugins:/var/www/html/wp-content/plugins
+            - ./themes:/var/www/html/wp-content/themes
+            - ./uploads:/var/www/html/wp-content/uploads
+            - ./config:/var/www/html/
+            - ./tmp:/tmp
+    # wpcli:
+    #     image: wordpress:cli
+    #     volumes_from:
+    #         - wordpress
+    #     depends_on:
+    #         - db
+    #     entrypoint: wp
+    #     command: "--info"
